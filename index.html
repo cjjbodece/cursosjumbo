@@ -3,420 +3,423 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Detective de Fórmulas Excel – CursosJumbo</title>
+  <title>CursosJumbo – Aprende Excel, Power BI y más</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0fdf4; color: #1a1a1a; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Segoe UI', Arial, sans-serif; background: #0a0a0a; color: #f1f1f1; }
 
-    .header {
-      background: #fff;
-      border-bottom: 2px solid #16a34a;
-      padding: 14px 24px;
+    /* ── NAVBAR ── */
+    nav {
+      position: fixed; top: 0; width: 100%; z-index: 100;
+      background: rgba(10,10,10,0.95); border-bottom: 1px solid #16a34a;
       display: flex; align-items: center; justify-content: space-between;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      padding: 14px 32px;
     }
-    .header-brand { display: flex; align-items: center; gap: 12px; }
-    .header-logo {
-      width: 44px; height: 44px;
+    .nav-brand { display: flex; align-items: center; gap: 10px; }
+    .nav-logo {
+      width: 38px; height: 38px;
       background: linear-gradient(135deg, #16a34a, #15803d);
-      border-radius: 10px;
+      border-radius: 8px; display: flex; align-items: center;
+      justify-content: center; font-size: 20px;
+    }
+    .nav-title { font-size: 20px; font-weight: 800; color: #16a34a; }
+    .nav-links { display: flex; gap: 28px; }
+    .nav-links a { color: #d1d5db; text-decoration: none; font-size: 14px; font-weight: 500; transition: color 0.2s; }
+    .nav-links a:hover { color: #16a34a; }
+    @media(max-width:600px){ .nav-links { display: none; } }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #0a0a0a 60%, #052e16 100%);
       display: flex; align-items: center; justify-content: center;
-      font-size: 22px;
+      text-align: center; padding: 100px 24px 60px;
     }
-    .header-title { font-size: 18px; font-weight: 800; color: #15803d; }
-    .header-sub { font-size: 11px; color: #6b7280; margin-top: 1px; }
-    .header-author { font-size: 12px; color: #9ca3af; font-style: italic; }
-
-    .container { max-width: 700px; margin: 0 auto; padding: 28px 16px; }
-
-    .stats-bar {
-      display: flex; gap: 20px;
-      background: #fff; border-radius: 12px;
-      padding: 10px 20px; margin-bottom: 20px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
-      border: 1px solid #d1fae5;
+    .hero-inner { max-width: 700px; }
+    .hero-badge {
+      display: inline-block; background: #052e16; border: 1px solid #16a34a;
+      color: #4ade80; font-size: 12px; font-weight: 700;
+      padding: 6px 18px; border-radius: 20px; margin-bottom: 24px; letter-spacing: 1px;
     }
-    .stat { text-align: center; }
-    .stat-val { font-size: 18px; font-weight: 800; }
-    .stat-lbl { font-size: 10px; color: #9ca3af; margin-top: 1px; }
-
-    .card {
-      background: #fff; border-radius: 20px;
-      padding: 32px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-      border: 1px solid #d1fae5;
+    .hero h1 { font-size: 48px; font-weight: 900; line-height: 1.15; margin-bottom: 20px; }
+    .hero h1 span { color: #16a34a; }
+    .hero p { font-size: 18px; color: #9ca3af; line-height: 1.7; margin-bottom: 36px; }
+    .hero-btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    .btn-green {
+      padding: 14px 32px; background: #16a34a; color: #fff;
+      font-size: 15px; font-weight: 700; border: none; border-radius: 12px;
+      cursor: pointer; text-decoration: none; transition: all 0.2s;
     }
-
-    .topics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px; }
-    @media(max-width:500px){ .topics-grid { grid-template-columns: 1fr; } }
-
-    .topic-btn {
-      padding: 14px 16px; background: #f0fdf4;
-      border: 1.5px solid #bbf7d0; border-radius: 12px;
-      text-align: left; font-size: 14px; font-weight: 600;
-      color: #15803d; cursor: pointer; transition: all 0.2s;
+    .btn-green:hover { background: #15803d; transform: translateY(-2px); }
+    .btn-outline {
+      padding: 14px 32px; background: transparent; color: #16a34a;
+      font-size: 15px; font-weight: 700; border: 2px solid #16a34a;
+      border-radius: 12px; cursor: pointer; text-decoration: none; transition: all 0.2s;
     }
-    .topic-btn:hover { background: #dcfce7; border-color: #16a34a; transform: scale(1.01); }
+    .btn-outline:hover { background: #052e16; transform: translateY(-2px); }
 
-    .hint {
-      background: #fffbeb; border: 1.5px solid #fde68a;
-      border-radius: 10px; padding: 10px 14px;
-      font-size: 13px; color: #92400e;
-      margin-bottom: 20px; text-align: center;
+    /* ── SECTION BASE ── */
+    section { padding: 80px 24px; }
+    .section-title {
+      text-align: center; font-size: 32px; font-weight: 900;
+      margin-bottom: 12px;
     }
+    .section-title span { color: #16a34a; }
+    .section-sub { text-align: center; color: #9ca3af; font-size: 16px; margin-bottom: 48px; }
 
-    .stmt-btn {
-      display: flex; align-items: flex-start; gap: 12px;
-      width: 100%; padding: 16px;
-      background: #f9fafb; border: 1.5px solid #e5e7eb;
-      border-radius: 14px; text-align: left;
-      font-size: 14px; color: #1f2937;
-      cursor: pointer; transition: all 0.2s; margin-bottom: 10px;
+    /* ── CURSOS ── */
+    #cursos { background: #111; }
+    .courses-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 24px; max-width: 1100px; margin: 0 auto;
     }
-    .stmt-btn:hover { background: #fee2e2; border-color: #f87171; transform: scale(1.01); }
-    .stmt-num {
-      min-width: 28px; height: 28px;
-      background: #d1fae5; color: #15803d;
-      border-radius: 50%; display: flex;
-      align-items: center; justify-content: center;
-      font-weight: 800; font-size: 13px;
+    .course-card {
+      background: #1a1a1a; border: 1px solid #1f2937;
+      border-radius: 16px; padding: 28px;
+      transition: all 0.3s; cursor: default;
+    }
+    .course-card:hover { border-color: #16a34a; transform: translateY(-4px); box-shadow: 0 8px 30px rgba(22,163,74,0.15); }
+    .course-icon { font-size: 40px; margin-bottom: 16px; }
+    .course-card h3 { font-size: 18px; font-weight: 800; margin-bottom: 10px; color: #f1f1f1; }
+    .course-card p { font-size: 14px; color: #9ca3af; line-height: 1.6; }
+    .course-tag {
+      display: inline-block; background: #052e16; color: #4ade80;
+      font-size: 11px; font-weight: 700; padding: 3px 12px;
+      border-radius: 20px; margin-top: 14px;
     }
 
-    .result-true {
-      display: flex; align-items: flex-start; gap: 12px;
-      background: #f0fdf4; border: 2px solid #86efac;
-      border-radius: 14px; padding: 14px; margin-bottom: 10px;
+    /* ── SOBRE MÍ ── */
+    #sobre { background: #0a0a0a; }
+    .about-inner {
+      max-width: 800px; margin: 0 auto;
+      display: flex; gap: 48px; align-items: center; flex-wrap: wrap;
     }
-    .result-false {
-      display: flex; align-items: flex-start; gap: 12px;
-      background: #fff1f2; border: 2px solid #fca5a5;
-      border-radius: 14px; padding: 14px; margin-bottom: 10px;
-    }
-    .result-icon {
-      min-width: 28px; height: 28px; border-radius: 50%;
+    .about-avatar {
+      width: 140px; height: 140px; border-radius: 50%;
+      background: linear-gradient(135deg, #16a34a, #052e16);
       display: flex; align-items: center; justify-content: center;
-      font-weight: 800; font-size: 13px;
+      font-size: 64px; flex-shrink: 0; margin: 0 auto;
     }
-    .icon-true { background: #16a34a; color: #fff; }
-    .icon-false { background: #dc2626; color: #fff; }
+    .about-text h3 { font-size: 26px; font-weight: 900; margin-bottom: 14px; }
+    .about-text h3 span { color: #16a34a; }
+    .about-text p { font-size: 15px; color: #9ca3af; line-height: 1.8; }
 
-    .explanation-box {
-      background: #eff6ff; border: 1.5px solid #bfdbfe;
-      border-radius: 14px; padding: 16px;
-      margin: 16px 0; font-size: 14px;
-      color: #1e40af; line-height: 1.6;
-    }
-
-    .btn-primary {
-      width: 100%; padding: 14px;
+    /* ── JUEGO FLOTANTE ── */
+    .game-fab {
+      position: fixed; bottom: 28px; right: 28px; z-index: 200;
+      width: 60px; height: 60px;
       background: linear-gradient(135deg, #16a34a, #15803d);
-      color: #fff; font-size: 16px; font-weight: 800;
-      border: none; border-radius: 14px;
-      cursor: pointer; transition: all 0.2s;
+      border-radius: 50%; border: none; cursor: pointer;
+      font-size: 28px; box-shadow: 0 4px 20px rgba(22,163,74,0.5);
+      transition: all 0.2s; display: flex; align-items: center; justify-content: center;
     }
-    .btn-primary:hover { opacity: 0.92; transform: scale(1.01); }
-
-    .badge {
-      display: inline-block; background: #dcfce7;
-      color: #15803d; font-size: 12px; font-weight: 700;
-      padding: 4px 14px; border-radius: 20px; margin-bottom: 12px;
-    }
-
-    .progress {
-      font-size: 12px; color: #9ca3af;
-      text-align: right; margin-bottom: 8px;
+    .game-fab:hover { transform: scale(1.1); }
+    .game-fab-label {
+      position: fixed; bottom: 96px; right: 20px; z-index: 200;
+      background: #1a1a1a; border: 1px solid #16a34a; color: #4ade80;
+      font-size: 12px; font-weight: 700; padding: 6px 12px;
+      border-radius: 8px; white-space: nowrap; pointer-events: none;
     }
 
-    .footer { text-align: center; margin-top: 32px; font-size: 12px; color: #9ca3af; }
-    .footer a { color: #16a34a; text-decoration: none; font-weight: 600; }
+    /* ── MODAL JUEGO ── */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0; z-index: 300;
+      background: rgba(0,0,0,0.85); align-items: center; justify-content: center;
+      padding: 16px;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal-box {
+      background: #f0fdf4; border-radius: 20px;
+      width: 100%; max-width: 680px; max-height: 90vh;
+      overflow-y: auto; position: relative;
+    }
+    .modal-close {
+      position: sticky; top: 0; float: right; margin: 12px 12px 0 0;
+      background: #dc2626; color: #fff; border: none; border-radius: 50%;
+      width: 32px; height: 32px; font-size: 18px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; z-index: 10;
+    }
+
+    /* ── CONTACTO ── */
+    #contacto { background: #111; }
+    .contact-inner { max-width: 600px; margin: 0 auto; text-align: center; }
+    .social-grid {
+      display: flex; flex-wrap: wrap; gap: 14px;
+      justify-content: center; margin-top: 32px;
+    }
+    .social-btn {
+      display: flex; align-items: center; gap: 8px;
+      padding: 12px 20px; border-radius: 12px; text-decoration: none;
+      font-size: 14px; font-weight: 700; transition: all 0.2s;
+    }
+    .social-btn:hover { transform: translateY(-2px); opacity: 0.9; }
+    .s-email  { background: #1a1a1a; border: 1px solid #374151; color: #f1f1f1; }
+    .s-green  { background: #25d366; color: #fff; }
+    .s-yt     { background: #ff0000; color: #fff; }
+    .s-li     { background: #0077b5; color: #fff; }
+    .s-fb     { background: #1877f2; color: #fff; }
+    .s-ig     { background: linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045); color: #fff; }
+    .s-tk     { background: #010101; border: 1px solid #374151; color: #fff; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #0a0a0a; border-top: 1px solid #1f2937;
+      text-align: center; padding: 24px;
+      font-size: 13px; color: #6b7280;
+    }
+    footer a { color: #16a34a; text-decoration: none; }
+
+    /* ── JUEGO (estilos internos del modal) ── */
+    .gm-header {
+      background: #fff; border-bottom: 2px solid #16a34a;
+      padding: 14px 24px; display: flex; align-items: center;
+      justify-content: space-between; border-radius: 20px 20px 0 0;
+    }
+    .gm-brand { display: flex; align-items: center; gap: 10px; }
+    .gm-logo {
+      width: 38px; height: 38px;
+      background: linear-gradient(135deg,#16a34a,#15803d);
+      border-radius: 8px; display: flex; align-items: center;
+      justify-content: center; font-size: 20px;
+    }
+    .gm-title { font-size: 16px; font-weight: 800; color: #15803d; }
+    .gm-sub { font-size: 11px; color: #6b7280; }
+    .gm-container { padding: 20px; color: #1a1a1a; }
+
+    .stats-bar { display:flex;gap:16px;background:#fff;border-radius:12px;padding:10px 20px;margin-bottom:16px;box-shadow:0 1px 4px rgba(0,0,0,.08);border:1px solid #d1fae5; }
+    .stat { text-align:center; }
+    .stat-val { font-size:18px;font-weight:800; }
+    .stat-lbl { font-size:10px;color:#9ca3af;margin-top:1px; }
+    .card { background:#fff;border-radius:16px;padding:24px;box-shadow:0 4px 20px rgba(0,0,0,.08);border:1px solid #d1fae5; }
+    .topics-grid { display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px; }
+    @media(max-width:420px){ .topics-grid{grid-template-columns:1fr;} }
+    .topic-btn { padding:12px 14px;background:#f0fdf4;border:1.5px solid #bbf7d0;border-radius:12px;text-align:left;font-size:13px;font-weight:600;color:#15803d;cursor:pointer;transition:all .2s; }
+    .topic-btn:hover { background:#dcfce7;border-color:#16a34a;transform:scale(1.01); }
+    .hint { background:#fffbeb;border:1.5px solid #fde68a;border-radius:10px;padding:10px 14px;font-size:13px;color:#92400e;margin-bottom:16px;text-align:center; }
+    .stmt-btn { display:flex;align-items:flex-start;gap:10px;width:100%;padding:14px;background:#f9fafb;border:1.5px solid #e5e7eb;border-radius:12px;text-align:left;font-size:13px;color:#1f2937;cursor:pointer;transition:all .2s;margin-bottom:8px; }
+    .stmt-btn:hover { background:#fee2e2;border-color:#f87171; }
+    .stmt-num { min-width:26px;height:26px;background:#d1fae5;color:#15803d;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px; }
+    .result-true { display:flex;align-items:flex-start;gap:10px;background:#f0fdf4;border:2px solid #86efac;border-radius:12px;padding:12px;margin-bottom:8px; }
+    .result-false { display:flex;align-items:flex-start;gap:10px;background:#fff1f2;border:2px solid #fca5a5;border-radius:12px;padding:12px;margin-bottom:8px; }
+    .result-icon { min-width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px; }
+    .icon-true { background:#16a34a;color:#fff; }
+    .icon-false { background:#dc2626;color:#fff; }
+    .explanation-box { background:#eff6ff;border:1.5px solid #bfdbfe;border-radius:12px;padding:14px;margin:14px 0;font-size:13px;color:#1e40af;line-height:1.6; }
+    .btn-primary { width:100%;padding:13px;background:linear-gradient(135deg,#16a34a,#15803d);color:#fff;font-size:15px;font-weight:800;border:none;border-radius:12px;cursor:pointer;transition:all .2s; }
+    .btn-primary:hover { opacity:.92; }
+    .badge { display:inline-block;background:#dcfce7;color:#15803d;font-size:12px;font-weight:700;padding:4px 14px;border-radius:20px;margin-bottom:10px; }
   </style>
 </head>
 <body>
 
-<div class="header">
-  <div class="header-brand">
-    <div class="header-logo">📊</div>
-    <div>
-      <div class="header-title">CursosJumbo</div>
-      <div class="header-sub">Detective de Fórmulas Excel</div>
+<!-- NAVBAR -->
+<nav>
+  <div class="nav-brand">
+    <div class="nav-logo">📊</div>
+    <div class="nav-title">CursosJumbo</div>
+  </div>
+  <div class="nav-links">
+    <a href="#cursos">Cursos</a>
+    <a href="#sobre">Sobre mí</a>
+    <a href="#contacto">Contacto</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge">FORMACIÓN PROFESIONAL ONLINE</div>
+    <h1>Aprende las herramientas<br/>que el mercado <span>necesita hoy</span></h1>
+    <p>Excel, Power BI, Quipux, Gestión de Inventarios y más.<br/>Cursos prácticos para tu crecimiento profesional.</p>
+    <div class="hero-btns">
+      <a href="#cursos" class="btn-green">Ver cursos</a>
+      <a href="#contacto" class="btn-outline">Contáctame</a>
     </div>
   </div>
-  <div class="header-author">por Carlos Jumbo</div>
+</section>
+
+<!-- CURSOS -->
+<section id="cursos">
+  <div class="section-title">Nuestros <span>Cursos</span></div>
+  <div class="section-sub">Formación práctica y aplicada a tu trabajo diario</div>
+  <div class="courses-grid">
+    <div class="course-card">
+      <div class="course-icon">📊</div>
+      <h3>Excel: Principiante a Avanzado</h3>
+      <p>Domina Excel desde cero hasta funciones avanzadas, tablas dinámicas, macros y automatización de tareas.</p>
+      <span class="course-tag">Más popular</span>
+    </div>
+    <div class="course-card">
+      <div class="course-icon">📈</div>
+      <h3>Power BI</h3>
+      <p>Transforma datos en dashboards interactivos. Aprende a conectar fuentes, modelar datos y crear reportes profesionales.</p>
+      <span class="course-tag">Business Intelligence</span>
+    </div>
+    <div class="course-card">
+      <div class="course-icon">📄</div>
+      <h3>Quipux – Gestión Documental</h3>
+      <p>Elaboración de oficios, memorandos y documentos oficiales. Normativa, estructura y base legal del sistema Quipux.</p>
+      <span class="course-tag">Sector Público</span>
+    </div>
+    <div class="course-card">
+      <div class="course-icon">📦</div>
+      <h3>Gestión de Bodega e Inventarios</h3>
+      <p>Control de activos, inventarios y bodegas. Procesos, registros y buenas prácticas para una gestión eficiente.</p>
+      <span class="course-tag">Gestión</span>
+    </div>
+  </div>
+</section>
+
+<!-- SOBRE MÍ -->
+<section id="sobre">
+  <div class="section-title">Sobre <span>mí</span></div>
+  <div class="section-sub">Instructor con experiencia en el sector público y privado</div>
+  <div class="about-inner">
+    <div class="about-avatar">👨‍💼</div>
+    <div class="about-text">
+      <h3>Carlos <span>Jumbo</span></h3>
+      <p>Profesional con amplia experiencia en gestión documental, control de activos y herramientas de análisis de datos. Me dedico a la formación práctica para que puedas aplicar lo aprendido desde el primer día en tu trabajo. Mis cursos están diseñados para el contexto latinoamericano, especialmente para quienes trabajan en el sector público.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<section id="contacto">
+  <div class="contact-inner">
+    <div class="section-title">Contáctame y <span>sígueme</span></div>
+    <div class="section-sub">Estoy disponible para consultas, clases personalizadas y más</div>
+    <div class="social-grid">
+      <a href="mailto:carlosjumbo7@gmail.com" class="social-btn s-email">✉️ carlosjumbo7@gmail.com</a>
+      <a href="https://wa.me/593989951503" target="_blank" class="social-btn s-green">💬 WhatsApp</a>
+      <a href="https://www.youtube.com/@Carlos_Jumbo" target="_blank" class="social-btn s-yt">▶ YouTube</a>
+      <a href="https://linkedin.com/in/carlos-xavier-jumbo-garcía-25637538" target="_blank" class="social-btn s-li">in LinkedIn</a>
+      <a href="https://web.facebook.com/carlos.jumbo.353/" target="_blank" class="social-btn s-fb">f Facebook</a>
+      <a href="https://instagram.com/jumbo962" target="_blank" class="social-btn s-ig">📷 @jumbo962</a>
+      <a href="https://tiktok.com/@carlos.jumbo93" target="_blank" class="social-btn s-tk">♪ TikTok</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2025 <a href="#">CursosJumbo</a> · Todos los derechos reservados · Hecho con 💚 por Carlos Jumbo</p>
+</footer>
+
+<!-- BOTÓN FLOTANTE JUEGO -->
+<div class="game-fab-label">🕵️ ¡Juega Detective Excel!</div>
+<button class="game-fab" onclick="document.querySelector('.modal-overlay').classList.add('open')" title="Detective de Fórmulas Excel">🕵️</button>
+
+<!-- MODAL JUEGO -->
+<div class="modal-overlay">
+  <div class="modal-box">
+    <button class="modal-close" onclick="document.querySelector('.modal-overlay').classList.remove('open')">✕</button>
+    <div class="gm-header">
+      <div class="gm-brand">
+        <div class="gm-logo">📊</div>
+        <div>
+          <div class="gm-title">CursosJumbo</div>
+          <div class="gm-sub">Detective de Fórmulas Excel</div>
+        </div>
+      </div>
+    </div>
+    <div class="gm-container" id="game-app"></div>
+  </div>
 </div>
 
-<div class="container" id="app"></div>
-
 <script>
-// ============================================================
-// BASE DE PREGUNTAS — 10 temas, 4 afirmaciones c/u
-// ============================================================
+// ── JUEGO ──────────────────────────────────────────────
 const BANK = [
-  {
-    topic: "Función SUMA",
-    statements: [
-      "=SUMA(A1:A10) suma todos los valores del rango A1 hasta A10.",
-      "=SUMA(A1,B1,C1) suma solo las celdas A1, B1 y C1.",
-      "La función SUMA puede sumar rangos no continuos separados por coma.",
-      "=SUMA() sin argumentos devuelve el valor más alto del libro."
-    ],
-    falseIdx: 3,
-    explanation: "=SUMA() siempre necesita al menos un argumento (rango o celda). Sin argumentos da error. Para obtener el valor más alto se usa =MAX()."
-  },
-  {
-    topic: "Función PROMEDIO",
-    statements: [
-      "=PROMEDIO(A1:A5) calcula la media aritmética de los valores en ese rango.",
-      "Si una celda del rango está vacía, PROMEDIO la ignora en el cálculo.",
-      "=PROMEDIO(10,20,30) devuelve 20.",
-      "PROMEDIO y MAX devuelven el mismo resultado cuando todos los valores son iguales."
-    ],
-    falseIdx: 3,
-    explanation: "PROMEDIO y MAX no siempre coinciden. MAX devuelve el valor más alto. Solo coinciden si todos los valores son exactamente iguales, pero son funciones distintas con propósitos distintos."
-  },
-  {
-    topic: "Función SI (IF)",
-    statements: [
-      "=SI(A1>10,\"Aprobado\",\"Reprobado\") devuelve 'Aprobado' si A1 es mayor que 10.",
-      "La función SI tiene tres argumentos: condición, valor si verdadero, valor si falso.",
-      "El tercer argumento de SI (valor si falso) es opcional.",
-      "=SI(A1>10) sin segundo argumento devuelve automáticamente el número 1."
-    ],
-    falseIdx: 3,
-    explanation: "SI sin segundo argumento no devuelve 1. Si se omite el valor verdadero, Excel devuelve 0 o puede generar un error según la versión. Siempre es recomendable completar los tres argumentos."
-  },
-  {
-    topic: "Función MAX y MIN",
-    statements: [
-      "=MAX(A1:A10) devuelve el valor más grande del rango.",
-      "=MIN(A1:A10) devuelve el valor más pequeño del rango.",
-      "MAX y MIN ignoran las celdas vacías y de texto.",
-      "=MAX(A1:A10) y =MIN(A1:A10) siempre devuelven el mismo resultado."
-    ],
-    falseIdx: 3,
-    explanation: "MAX y MIN devuelven resultados distintos salvo que todos los valores del rango sean iguales. MAX busca el mayor y MIN busca el menor."
-  },
-  {
-    topic: "Referencias absolutas y relativas",
-    statements: [
-      "Una referencia relativa como A1 cambia cuando copias la fórmula a otra celda.",
-      "Una referencia absoluta como $A$1 no cambia al copiar la fórmula.",
-      "Puedes presionar F4 para alternar entre referencia relativa y absoluta.",
-      "La referencia $A1 fija tanto la columna como la fila al copiar."
-    ],
-    falseIdx: 3,
-    explanation: "$A1 es una referencia mixta: fija solo la columna (A) pero la fila sí cambia al copiar. Para fijar ambos se necesita $A$1."
-  },
-  {
-    topic: "Función CONTAR y CONTARA",
-    statements: [
-      "=CONTAR(A1:A10) cuenta solo las celdas que contienen números.",
-      "=CONTARA(A1:A10) cuenta todas las celdas que no están vacías.",
-      "CONTAR ignora celdas con texto, solo cuenta valores numéricos.",
-      "=CONTARA() y =CONTAR() siempre devuelven el mismo resultado."
-    ],
-    falseIdx: 3,
-    explanation: "CONTAR solo cuenta celdas con números, mientras CONTARA cuenta cualquier celda no vacía (texto, números, fechas). Solo coinciden si el rango tiene únicamente números y ninguna celda vacía."
-  },
-  {
-    topic: "Función BUSCARV (VLOOKUP)",
-    statements: [
-      "=BUSCARV(valor, tabla, columna, 0) busca una coincidencia exacta.",
-      "El último argumento 0 o FALSO en BUSCARV indica búsqueda exacta.",
-      "BUSCARV busca el valor en la primera columna de la tabla especificada.",
-      "BUSCARV puede buscar valores tanto en la primera como en cualquier columna de la tabla."
-    ],
-    falseIdx: 3,
-    explanation: "BUSCARV siempre busca el valor en la PRIMERA columna del rango de tabla. Si necesitas buscar en otra columna, debes usar INDICE+COINCIDIR o BUSCARX (versiones modernas de Excel)."
-  },
-  {
-    topic: "Función CONCATENAR",
-    statements: [
-      "=CONCATENAR(A1,\" \",B1) une el contenido de A1, un espacio y B1.",
-      "En Excel moderno se puede usar el operador & en lugar de CONCATENAR.",
-      "=A1&\" \"&B1 produce el mismo resultado que =CONCATENAR(A1,\" \",B1).",
-      "CONCATENAR puede sumar números y texto al mismo tiempo como una calculadora."
-    ],
-    falseIdx: 3,
-    explanation: "CONCATENAR une texto, no realiza sumas. Si concatenas números, los trata como texto. Para sumar números debes usar =SUMA(). Por ejemplo, =CONCATENAR(1,2) devuelve '12', no 3."
-  },
-  {
-    topic: "Función HOY() y AHORA()",
-    statements: [
-      "=HOY() devuelve la fecha actual del sistema sin incluir la hora.",
-      "=AHORA() devuelve la fecha y hora actual del sistema.",
-      "Ambas funciones se actualizan automáticamente cada vez que se recalcula el libro.",
-      "=HOY() y =AHORA() requieren ingresar la fecha manualmente como argumento."
-    ],
-    falseIdx: 3,
-    explanation: "HOY() y AHORA() no tienen argumentos. Se escriben sin nada dentro del paréntesis y obtienen la fecha/hora directamente del sistema. Si les pones un argumento, Excel dará error."
-  },
-  {
-    topic: "Función REDONDEAR",
-    statements: [
-      "=REDONDEAR(3.567, 2) devuelve 3.57.",
-      "El segundo argumento de REDONDEAR indica el número de decimales.",
-      "=REDONDEAR(3.567, 0) devuelve 4.",
-      "=REDONDEAR(3.567, -1) genera un error porque no acepta números negativos."
-    ],
-    falseIdx: 3,
-    explanation: "REDONDEAR sí acepta números negativos en el segundo argumento. Con -1 redondea a la decena más cercana, con -2 a la centena, etc. Por ejemplo, =REDONDEAR(53, -1) devuelve 50."
-  }
+  { topic:"Función SUMA", statements:["=SUMA(A1:A10) suma todos los valores del rango A1 hasta A10.","=SUMA(A1,B1,C1) suma solo las celdas A1, B1 y C1.","La función SUMA puede sumar rangos no continuos separados por coma.","=SUMA() sin argumentos devuelve el valor más alto del libro."], falseIdx:3, explanation:"=SUMA() siempre necesita al menos un argumento. Sin argumentos da error. Para el valor más alto se usa =MAX()." },
+  { topic:"Función PROMEDIO", statements:["=PROMEDIO(A1:A5) calcula la media aritmética de los valores en ese rango.","Si una celda del rango está vacía, PROMEDIO la ignora en el cálculo.","=PROMEDIO(10,20,30) devuelve 20.","PROMEDIO y MAX devuelven el mismo resultado cuando todos los valores son iguales."], falseIdx:3, explanation:"PROMEDIO y MAX no siempre coinciden. MAX devuelve el valor más alto. Solo coinciden si todos los valores son exactamente iguales." },
+  { topic:"Función SI (IF)", statements:["=SI(A1>10,\"Aprobado\",\"Reprobado\") devuelve 'Aprobado' si A1 es mayor que 10.","La función SI tiene tres argumentos: condición, valor si verdadero, valor si falso.","El tercer argumento de SI (valor si falso) es opcional.","=SI(A1>10) sin segundo argumento devuelve automáticamente el número 1."], falseIdx:3, explanation:"SI sin segundo argumento no devuelve 1. Si se omite el valor verdadero, Excel devuelve 0 o puede generar un error." },
+  { topic:"Función MAX y MIN", statements:["=MAX(A1:A10) devuelve el valor más grande del rango.","=MIN(A1:A10) devuelve el valor más pequeño del rango.","MAX y MIN ignoran las celdas vacías y de texto.","=MAX(A1:A10) y =MIN(A1:A10) siempre devuelven el mismo resultado."], falseIdx:3, explanation:"MAX y MIN devuelven resultados distintos salvo que todos los valores del rango sean iguales." },
+  { topic:"Referencias absolutas y relativas", statements:["Una referencia relativa como A1 cambia cuando copias la fórmula a otra celda.","Una referencia absoluta como $A$1 no cambia al copiar la fórmula.","Puedes presionar F4 para alternar entre referencia relativa y absoluta.","La referencia $A1 fija tanto la columna como la fila al copiar."], falseIdx:3, explanation:"$A1 es una referencia mixta: fija solo la columna (A) pero la fila sí cambia al copiar. Para fijar ambos se necesita $A$1." },
+  { topic:"Función CONTAR y CONTARA", statements:["=CONTAR(A1:A10) cuenta solo las celdas que contienen números.","=CONTARA(A1:A10) cuenta todas las celdas que no están vacías.","CONTAR ignora celdas con texto, solo cuenta valores numéricos.","=CONTARA() y =CONTAR() siempre devuelven el mismo resultado."], falseIdx:3, explanation:"CONTAR solo cuenta celdas con números, mientras CONTARA cuenta cualquier celda no vacía." },
+  { topic:"Función BUSCARV", statements:["=BUSCARV(valor, tabla, columna, 0) busca una coincidencia exacta.","El último argumento 0 o FALSO indica búsqueda exacta.","BUSCARV busca el valor en la primera columna de la tabla especificada.","BUSCARV puede buscar valores en cualquier columna de la tabla."], falseIdx:3, explanation:"BUSCARV siempre busca en la PRIMERA columna del rango. Para buscar en otra columna se usa INDICE+COINCIDIR o BUSCARX." },
+  { topic:"Función CONCATENAR", statements:["=CONCATENAR(A1,\" \",B1) une el contenido de A1, un espacio y B1.","En Excel moderno se puede usar el operador & en lugar de CONCATENAR.","=A1&\" \"&B1 produce el mismo resultado que =CONCATENAR(A1,\" \",B1).","CONCATENAR puede sumar números y texto al mismo tiempo como una calculadora."], falseIdx:3, explanation:"CONCATENAR une texto, no realiza sumas. =CONCATENAR(1,2) devuelve '12', no 3." },
+  { topic:"Función HOY() y AHORA()", statements:["=HOY() devuelve la fecha actual del sistema sin incluir la hora.","=AHORA() devuelve la fecha y hora actual del sistema.","Ambas funciones se actualizan automáticamente cada vez que se recalcula el libro.","=HOY() y =AHORA() requieren ingresar la fecha manualmente como argumento."], falseIdx:3, explanation:"HOY() y AHORA() no tienen argumentos. Se escriben sin nada dentro del paréntesis y obtienen la fecha/hora del sistema." },
+  { topic:"Función REDONDEAR", statements:["=REDONDEAR(3.567, 2) devuelve 3.57.","El segundo argumento indica el número de decimales.","=REDONDEAR(3.567, 0) devuelve 4.","=REDONDEAR(3.567, -1) genera un error porque no acepta números negativos."], falseIdx:3, explanation:"REDONDEAR sí acepta números negativos. Con -1 redondea a la decena más cercana. =REDONDEAR(53,-1) devuelve 50." }
 ];
 
-// ============================================================
-// ESTADO DEL JUEGO
-// ============================================================
-let state = {
-  phase: "menu",       // menu | playing | result
-  topic: "",
-  statements: [],
-  falseIdx: null,
-  explanation: "",
-  selected: null,
-  score: 0,
-  total: 0,
-  streak: 0,
-  usedTopics: [],
-  currentBank: []
-};
+let state = { phase:"menu", topic:"", statements:[], falseIdx:null, explanation:"", selected:null, score:0, total:0, streak:0, usedTopics:[], currentBank:[] };
 
-function shuffle(arr) {
-  return [...arr].sort(() => Math.random() - 0.5);
+function shuffle(arr){ return [...arr].sort(()=>Math.random()-.5); }
+function getTopics(){
+  if(state.usedTopics.length>=BANK.length) state.usedTopics=[];
+  return shuffle(BANK.filter(b=>!state.usedTopics.includes(b.topic))).slice(0,6);
 }
-
-function getTopics() {
-  // Reinicia si se usaron todos
-  if (state.usedTopics.length >= BANK.length) state.usedTopics = [];
-  const available = BANK.filter(b => !state.usedTopics.includes(b.topic));
-  return shuffle(available).slice(0, 6);
-}
-
-function startGame(item) {
+function startGame(item){
   state.usedTopics.push(item.topic);
-  state.topic = item.topic;
-  state.statements = item.statements;
-  state.falseIdx = item.falseIdx;
-  state.explanation = item.explanation;
-  state.selected = null;
-  state.phase = "playing";
+  Object.assign(state,{topic:item.topic,statements:item.statements,falseIdx:item.falseIdx,explanation:item.explanation,selected:null,phase:"playing"});
   render();
 }
-
-function handleSelect(idx) {
-  if (state.selected !== null) return;
-  state.selected = idx;
-  state.total++;
-  if (idx === state.falseIdx) { state.score++; state.streak++; }
-  else state.streak = 0;
-  state.phase = "result";
-  render();
+function handleSelect(idx){
+  if(state.selected!==null) return;
+  state.selected=idx; state.total++;
+  if(idx===state.falseIdx){state.score++;state.streak++;}else state.streak=0;
+  state.phase="result"; render();
 }
+function goMenu(){ state.phase="menu"; render(); }
 
-function goMenu() {
-  state.phase = "menu";
-  render();
-}
+function render(){
+  const app=document.getElementById("game-app");
+  const acc=state.total>0?Math.round((state.score/state.total)*100):0;
+  let html="";
 
-// ============================================================
-// RENDER
-// ============================================================
-function render() {
-  const app = document.getElementById("app");
-  const accuracy = state.total > 0 ? Math.round((state.score / state.total) * 100) : 0;
-
-  let html = "";
-
-  // Stats bar
-  if (state.total > 0) {
-    html += `<div class="stats-bar">
+  if(state.total>0){
+    html+=`<div class="stats-bar">
       <div class="stat"><div class="stat-val" style="color:#ca8a04">🏆 ${state.score}</div><div class="stat-lbl">Puntos</div></div>
       <div class="stat"><div class="stat-val" style="color:#ea580c">⚡ ${state.streak}</div><div class="stat-lbl">Racha</div></div>
-      <div class="stat"><div class="stat-val" style="color:#16a34a">🎯 ${accuracy}%</div><div class="stat-lbl">Precisión</div></div>
+      <div class="stat"><div class="stat-val" style="color:#16a34a">🎯 ${acc}%</div><div class="stat-lbl">Precisión</div></div>
       <div class="stat"><div class="stat-val" style="color:#6b7280">📋 ${state.total}</div><div class="stat-lbl">Jugadas</div></div>
     </div>`;
   }
 
-  // MENÚ
-  if (state.phase === "menu") {
-    const topics = getTopics();
-    state.currentBank = topics;
-    let topicBtns = topics.map((t, i) =>
-      `<button class="topic-btn" onclick="startGame(state.currentBank[${i}])">📌 ${t.topic}</button>`
-    ).join("");
-
-    html += `<div class="card">
-      <div style="text-align:center;margin-bottom:24px">
-        <div style="font-size:48px;margin-bottom:8px">🕵️</div>
-        <h2 style="font-size:22px;font-weight:800;color:#15803d;margin-bottom:8px">Detective de Fórmulas Excel</h2>
-        <p style="font-size:14px;color:#6b7280;line-height:1.6">
-          Se muestran <strong>4 afirmaciones</strong> sobre Excel.<br/>
-          <strong>3 son verdaderas</strong> y <strong>1 es falsa</strong>. ¡Encuéntrala!
-        </p>
+  if(state.phase==="menu"){
+    const topics=getTopics(); state.currentBank=topics;
+    html+=`<div class="card">
+      <div style="text-align:center;margin-bottom:20px">
+        <div style="font-size:44px;margin-bottom:8px">🕵️</div>
+        <h2 style="font-size:20px;font-weight:800;color:#15803d;margin-bottom:8px">Detective de Fórmulas Excel</h2>
+        <p style="font-size:13px;color:#6b7280;line-height:1.6">Se muestran <strong>4 afirmaciones</strong>. <strong>3 son verdaderas</strong> y <strong>1 es falsa</strong>. ¡Encuéntrala!</p>
       </div>
-      <h3 style="font-size:14px;font-weight:700;color:#374151;margin-bottom:4px">Elige un tema para comenzar:</h3>
-      <div class="topics-grid">${topicBtns}</div>
+      <h3 style="font-size:13px;font-weight:700;color:#374151;margin-bottom:6px">Elige un tema:</h3>
+      <div class="topics-grid">${topics.map((t,i)=>`<button class="topic-btn" onclick="startGame(state.currentBank[${i}])">📌 ${t.topic}</button>`).join("")}</div>
     </div>`;
   }
 
-  // JUGANDO
-  if (state.phase === "playing") {
-    let stmtBtns = state.statements.map((s, i) =>
-      `<button class="stmt-btn" onclick="handleSelect(${i})">
-        <span class="stmt-num">${i+1}</span>
-        <span>${s}</span>
-      </button>`
-    ).join("");
-
-    html += `<div class="card">
-      <div style="text-align:center;margin-bottom:16px">
-        <span class="badge">📌 ${state.topic}</span>
-      </div>
+  if(state.phase==="playing"){
+    html+=`<div class="card">
+      <div style="text-align:center;margin-bottom:14px"><span class="badge">📌 ${state.topic}</span></div>
       <div class="hint">⚠️ Toca la afirmación que crees que es <strong>FALSA</strong></div>
-      ${stmtBtns}
+      ${state.statements.map((s,i)=>`<button class="stmt-btn" onclick="handleSelect(${i})"><span class="stmt-num">${i+1}</span><span>${s}</span></button>`).join("")}
     </div>`;
   }
 
-  // RESULTADO
-  if (state.phase === "result") {
-    const correct = state.selected === state.falseIdx;
-
-    let stmtResults = state.statements.map((s, i) => {
-      const isFalse = i === state.falseIdx;
-      return `<div class="${isFalse ? 'result-false' : 'result-true'}">
-        <span class="result-icon ${isFalse ? 'icon-false' : 'icon-true'}">${isFalse ? '✗' : '✓'}</span>
-        <div>
-          <div style="font-size:14px;line-height:1.5">${s}</div>
-          <div style="font-size:11px;font-weight:700;margin-top:4px;color:${isFalse ? '#dc2626' : '#16a34a'}">
-            ${isFalse ? '❌ FALSA' : '✅ VERDADERA'}
-          </div>
-        </div>
-      </div>`;
-    }).join("");
-
-    html += `<div class="card">
-      <div style="text-align:center;margin-bottom:24px">
-        <div style="font-size:48px">${correct ? '✅' : '❌'}</div>
-        <h2 style="font-size:24px;font-weight:800;color:${correct ? '#16a34a' : '#dc2626'};margin-top:8px">
-          ${correct ? '¡Correcto!' : '¡Casi!'}
-        </h2>
-        <p style="font-size:14px;color:#6b7280;margin-top:4px">
-          ${correct ? 'Detectaste la afirmación falsa 🎯' : 'Esta vez la falsa te engañó 😅'}
-        </p>
+  if(state.phase==="result"){
+    const ok=state.selected===state.falseIdx;
+    html+=`<div class="card">
+      <div style="text-align:center;margin-bottom:20px">
+        <div style="font-size:44px">${ok?'✅':'❌'}</div>
+        <h2 style="font-size:22px;font-weight:800;color:${ok?'#16a34a':'#dc2626'};margin-top:8px">${ok?'¡Correcto!':'¡Casi!'}</h2>
+        <p style="font-size:13px;color:#6b7280;margin-top:4px">${ok?'Detectaste la afirmación falsa 🎯':'Esta vez la falsa te engañó 😅'}</p>
       </div>
-      ${stmtResults}
-      <div class="explanation-box">
-        <strong style="display:block;margin-bottom:6px;font-size:13px">💡 Explicación del instructor:</strong>
-        ${state.explanation}
-      </div>
+      ${state.statements.map((s,i)=>{
+        const isFalse=i===state.falseIdx;
+        return `<div class="${isFalse?'result-false':'result-true'}">
+          <span class="result-icon ${isFalse?'icon-false':'icon-true'}">${isFalse?'✗':'✓'}</span>
+          <div><div style="font-size:13px;line-height:1.5">${s}</div>
+          <div style="font-size:11px;font-weight:700;margin-top:4px;color:${isFalse?'#dc2626':'#16a34a'}">${isFalse?'❌ FALSA':'✅ VERDADERA'}</div></div>
+        </div>`;
+      }).join("")}
+      <div class="explanation-box"><strong style="display:block;margin-bottom:6px;font-size:12px">💡 Explicación:</strong>${state.explanation}</div>
       <button class="btn-primary" onclick="goMenu()">🔄 Seguir practicando</button>
     </div>`;
   }
 
-  html += `<div class="footer">Creado por <a href="https://cursosjumbo.com" target="_blank">Carlos Jumbo</a> · cursosjumbo.com</div>`;
-
-  app.innerHTML = html;
+  app.innerHTML=html;
 }
-
-// Iniciar
 render();
 </script>
 </body>
