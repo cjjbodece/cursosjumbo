@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Detective de Fórmulas Excel – CursosJumbo</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0fdf4; color: #1a1a1a; }
+
+    .header {
+      background: #fff;
+      border-bottom: 2px solid #16a34a;
+      padding: 14px 24px;
+      display: flex; align-items: center; justify-content: space-between;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .header-brand { display: flex; align-items: center; gap: 12px; }
+    .header-logo {
+      width: 44px; height: 44px;
+      background: linear-gradient(135deg, #16a34a, #15803d);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px;
+    }
+    .header-title { font-size: 18px; font-weight: 800; color: #15803d; }
+    .header-sub { font-size: 11px; color: #6b7280; margin-top: 1px; }
+    .header-author { font-size: 12px; color: #9ca3af; font-style: italic; }
+
+    .container { max-width: 700px; margin: 0 auto; padding: 28px 16px; }
+
+    .stats-bar {
+      display: flex; gap: 20px;
+      background: #fff; border-radius: 12px;
+      padding: 10px 20px; margin-bottom: 20px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      border: 1px solid #d1fae5;
+    }
+    .stat { text-align: center; }
+    .stat-val { font-size: 18px; font-weight: 800; }
+    .stat-lbl { font-size: 10px; color: #9ca3af; margin-top: 1px; }
+
+    .card {
+      background: #fff; border-radius: 20px;
+      padding: 32px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      border: 1px solid #d1fae5;
+    }
+
+    .topics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px; }
+    @media(max-width:500px){ .topics-grid { grid-template-columns: 1fr; } }
+
+    .topic-btn {
+      padding: 14px 16px; background: #f0fdf4;
+      border: 1.5px solid #bbf7d0; border-radius: 12px;
+      text-align: left; font-size: 14px; font-weight: 600;
+      color: #15803d; cursor: pointer; transition: all 0.2s;
+    }
+    .topic-btn:hover { background: #dcfce7; border-color: #16a34a; transform: scale(1.01); }
+
+    .hint {
+      background: #fffbeb; border: 1.5px solid #fde68a;
+      border-radius: 10px; padding: 10px 14px;
+      font-size: 13px; color: #92400e;
+      margin-bottom: 20px; text-align: center;
+    }
+
+    .stmt-btn {
+      display: flex; align-items: flex-start; gap: 12px;
+      width: 100%; padding: 16px;
+      background: #f9fafb; border: 1.5px solid #e5e7eb;
+      border-radius: 14px; text-align: left;
+      font-size: 14px; color: #1f2937;
+      cursor: pointer; transition: all 0.2s; margin-bottom: 10px;
+    }
+    .stmt-btn:hover { background: #fee2e2; border-color: #f87171; transform: scale(1.01); }
+    .stmt-num {
+      min-width: 28px; height: 28px;
+      background: #d1fae5; color: #15803d;
+      border-radius: 50%; display: flex;
+      align-items: center; justify-content: center;
+      font-weight: 800; font-size: 13px;
+    }
+
+    .result-true {
+      display: flex; align-items: flex-start; gap: 12px;
+      background: #f0fdf4; border: 2px solid #86efac;
+      border-radius: 14px; padding: 14px; margin-bottom: 10px;
+    }
+    .result-false {
+      display: flex; align-items: flex-start; gap: 12px;
+      background: #fff1f2; border: 2px solid #fca5a5;
+      border-radius: 14px; padding: 14px; margin-bottom: 10px;
+    }
+    .result-icon {
+      min-width: 28px; height: 28px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 13px;
+    }
+    .icon-true { background: #16a34a; color: #fff; }
+    .icon-false { background: #dc2626; color: #fff; }
+
+    .explanation-box {
+      background: #eff6ff; border: 1.5px solid #bfdbfe;
+      border-radius: 14px; padding: 16px;
+      margin: 16px 0; font-size: 14px;
+      color: #1e40af; line-height: 1.6;
+    }
+
+    .btn-primary {
+      width: 100%; padding: 14px;
+      background: linear-gradient(135deg, #16a34a, #15803d);
+      color: #fff; font-size: 16px; font-weight: 800;
+      border: none; border-radius: 14px;
+      cursor: pointer; transition: all 0.2s;
+    }
+    .btn-primary:hover { opacity: 0.92; transform: scale(1.01); }
+
+    .badge {
+      display: inline-block; background: #dcfce7;
+      color: #15803d; font-size: 12px; font-weight: 700;
+      padding: 4px 14px; border-radius: 20px; margin-bottom: 12px;
+    }
+
+    .progress {
+      font-size: 12px; color: #9ca3af;
+      text-align: right; margin-bottom: 8px;
+    }
+
+    .footer { text-align: center; margin-top: 32px; font-size: 12px; color: #9ca3af; }
+    .footer a { color: #16a34a; text-decoration: none; font-weight: 600; }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-brand">
+    <div class="header-logo">📊</div>
+    <div>
+      <div class="header-title">CursosJumbo</div>
+      <div class="header-sub">Detective de Fórmulas Excel</div>
+    </div>
+  </div>
+  <div class="header-author">por Carlos Jumbo</div>
+</div>
+
+<div class="container" id="app"></div>
+
+<script>
+// ============================================================
+// BASE DE PREGUNTAS — 10 temas, 4 afirmaciones c/u
+// ============================================================
+const BANK = [
+  {
+    topic: "Función SUMA",
+    statements: [
+      "=SUMA(A1:A10) suma todos los valores del rango A1 hasta A10.",
+      "=SUMA(A1,B1,C1) suma solo las celdas A1, B1 y C1.",
+      "La función SUMA puede sumar rangos no continuos separados por coma.",
+      "=SUMA() sin argumentos devuelve el valor más alto del libro."
+    ],
+    falseIdx: 3,
+    explanation: "=SUMA() siempre necesita al menos un argumento (rango o celda). Sin argumentos da error. Para obtener el valor más alto se usa =MAX()."
+  },
+  {
+    topic: "Función PROMEDIO",
+    statements: [
+      "=PROMEDIO(A1:A5) calcula la media aritmética de los valores en ese rango.",
+      "Si una celda del rango está vacía, PROMEDIO la ignora en el cálculo.",
+      "=PROMEDIO(10,20,30) devuelve 20.",
+      "PROMEDIO y MAX devuelven el mismo resultado cuando todos los valores son iguales."
+    ],
+    falseIdx: 3,
+    explanation: "PROMEDIO y MAX no siempre coinciden. MAX devuelve el valor más alto. Solo coinciden si todos los valores son exactamente iguales, pero son funciones distintas con propósitos distintos."
+  },
+  {
+    topic: "Función SI (IF)",
+    statements: [
+      "=SI(A1>10,\"Aprobado\",\"Reprobado\") devuelve 'Aprobado' si A1 es mayor que 10.",
+      "La función SI tiene tres argumentos: condición, valor si verdadero, valor si falso.",
+      "El tercer argumento de SI (valor si falso) es opcional.",
+      "=SI(A1>10) sin segundo argumento devuelve automáticamente el número 1."
+    ],
+    falseIdx: 3,
+    explanation: "SI sin segundo argumento no devuelve 1. Si se omite el valor verdadero, Excel devuelve 0 o puede generar un error según la versión. Siempre es recomendable completar los tres argumentos."
+  },
+  {
+    topic: "Función MAX y MIN",
+    statements: [
+      "=MAX(A1:A10) devuelve el valor más grande del rango.",
+      "=MIN(A1:A10) devuelve el valor más pequeño del rango.",
+      "MAX y MIN ignoran las celdas vacías y de texto.",
+      "=MAX(A1:A10) y =MIN(A1:A10) siempre devuelven el mismo resultado."
+    ],
+    falseIdx: 3,
+    explanation: "MAX y MIN devuelven resultados distintos salvo que todos los valores del rango sean iguales. MAX busca el mayor y MIN busca el menor."
+  },
+  {
+    topic: "Referencias absolutas y relativas",
+    statements: [
+      "Una referencia relativa como A1 cambia cuando copias la fórmula a otra celda.",
+      "Una referencia absoluta como $A$1 no cambia al copiar la fórmula.",
+      "Puedes presionar F4 para alternar entre referencia relativa y absoluta.",
+      "La referencia $A1 fija tanto la columna como la fila al copiar."
+    ],
+    falseIdx: 3,
+    explanation: "$A1 es una referencia mixta: fija solo la columna (A) pero la fila sí cambia al copiar. Para fijar ambos se necesita $A$1."
+  },
+  {
+    topic: "Función CONTAR y CONTARA",
+    statements: [
+      "=CONTAR(A1:A10) cuenta solo las celdas que contienen números.",
+      "=CONTARA(A1:A10) cuenta todas las celdas que no están vacías.",
+      "CONTAR ignora celdas con texto, solo cuenta valores numéricos.",
+      "=CONTARA() y =CONTAR() siempre devuelven el mismo resultado."
+    ],
+    falseIdx: 3,
+    explanation: "CONTAR solo cuenta celdas con números, mientras CONTARA cuenta cualquier celda no vacía (texto, números, fechas). Solo coinciden si el rango tiene únicamente números y ninguna celda vacía."
+  },
+  {
+    topic: "Función BUSCARV (VLOOKUP)",
+    statements: [
+      "=BUSCARV(valor, tabla, columna, 0) busca una coincidencia exacta.",
+      "El último argumento 0 o FALSO en BUSCARV indica búsqueda exacta.",
+      "BUSCARV busca el valor en la primera columna de la tabla especificada.",
+      "BUSCARV puede buscar valores tanto en la primera como en cualquier columna de la tabla."
+    ],
+    falseIdx: 3,
+    explanation: "BUSCARV siempre busca el valor en la PRIMERA columna del rango de tabla. Si necesitas buscar en otra columna, debes usar INDICE+COINCIDIR o BUSCARX (versiones modernas de Excel)."
+  },
+  {
+    topic: "Función CONCATENAR",
+    statements: [
+      "=CONCATENAR(A1,\" \",B1) une el contenido de A1, un espacio y B1.",
+      "En Excel moderno se puede usar el operador & en lugar de CONCATENAR.",
+      "=A1&\" \"&B1 produce el mismo resultado que =CONCATENAR(A1,\" \",B1).",
+      "CONCATENAR puede sumar números y texto al mismo tiempo como una calculadora."
+    ],
+    falseIdx: 3,
+    explanation: "CONCATENAR une texto, no realiza sumas. Si concatenas números, los trata como texto. Para sumar números debes usar =SUMA(). Por ejemplo, =CONCATENAR(1,2) devuelve '12', no 3."
+  },
+  {
+    topic: "Función HOY() y AHORA()",
+    statements: [
+      "=HOY() devuelve la fecha actual del sistema sin incluir la hora.",
+      "=AHORA() devuelve la fecha y hora actual del sistema.",
+      "Ambas funciones se actualizan automáticamente cada vez que se recalcula el libro.",
+      "=HOY() y =AHORA() requieren ingresar la fecha manualmente como argumento."
+    ],
+    falseIdx: 3,
+    explanation: "HOY() y AHORA() no tienen argumentos. Se escriben sin nada dentro del paréntesis y obtienen la fecha/hora directamente del sistema. Si les pones un argumento, Excel dará error."
+  },
+  {
+    topic: "Función REDONDEAR",
+    statements: [
+      "=REDONDEAR(3.567, 2) devuelve 3.57.",
+      "El segundo argumento de REDONDEAR indica el número de decimales.",
+      "=REDONDEAR(3.567, 0) devuelve 4.",
+      "=REDONDEAR(3.567, -1) genera un error porque no acepta números negativos."
+    ],
+    falseIdx: 3,
+    explanation: "REDONDEAR sí acepta números negativos en el segundo argumento. Con -1 redondea a la decena más cercana, con -2 a la centena, etc. Por ejemplo, =REDONDEAR(53, -1) devuelve 50."
+  }
+];
+
+// ============================================================
+// ESTADO DEL JUEGO
+// ============================================================
+let state = {
+  phase: "menu",       // menu | playing | result
+  topic: "",
+  statements: [],
+  falseIdx: null,
+  explanation: "",
+  selected: null,
+  score: 0,
+  total: 0,
+  streak: 0,
+  usedTopics: [],
+  currentBank: []
+};
+
+function shuffle(arr) {
+  return [...arr].sort(() => Math.random() - 0.5);
+}
+
+function getTopics() {
+  // Reinicia si se usaron todos
+  if (state.usedTopics.length >= BANK.length) state.usedTopics = [];
+  const available = BANK.filter(b => !state.usedTopics.includes(b.topic));
+  return shuffle(available).slice(0, 6);
+}
+
+function startGame(item) {
+  state.usedTopics.push(item.topic);
+  state.topic = item.topic;
+  state.statements = item.statements;
+  state.falseIdx = item.falseIdx;
+  state.explanation = item.explanation;
+  state.selected = null;
+  state.phase = "playing";
+  render();
+}
+
+function handleSelect(idx) {
+  if (state.selected !== null) return;
+  state.selected = idx;
+  state.total++;
+  if (idx === state.falseIdx) { state.score++; state.streak++; }
+  else state.streak = 0;
+  state.phase = "result";
+  render();
+}
+
+function goMenu() {
+  state.phase = "menu";
+  render();
+}
+
+// ============================================================
+// RENDER
+// ============================================================
+function render() {
+  const app = document.getElementById("app");
+  const accuracy = state.total > 0 ? Math.round((state.score / state.total) * 100) : 0;
+
+  let html = "";
+
+  // Stats bar
+  if (state.total > 0) {
+    html += `<div class="stats-bar">
+      <div class="stat"><div class="stat-val" style="color:#ca8a04">🏆 ${state.score}</div><div class="stat-lbl">Puntos</div></div>
+      <div class="stat"><div class="stat-val" style="color:#ea580c">⚡ ${state.streak}</div><div class="stat-lbl">Racha</div></div>
+      <div class="stat"><div class="stat-val" style="color:#16a34a">🎯 ${accuracy}%</div><div class="stat-lbl">Precisión</div></div>
+      <div class="stat"><div class="stat-val" style="color:#6b7280">📋 ${state.total}</div><div class="stat-lbl">Jugadas</div></div>
+    </div>`;
+  }
+
+  // MENÚ
+  if (state.phase === "menu") {
+    const topics = getTopics();
+    state.currentBank = topics;
+    let topicBtns = topics.map((t, i) =>
+      `<button class="topic-btn" onclick="startGame(state.currentBank[${i}])">📌 ${t.topic}</button>`
+    ).join("");
+
+    html += `<div class="card">
+      <div style="text-align:center;margin-bottom:24px">
+        <div style="font-size:48px;margin-bottom:8px">🕵️</div>
+        <h2 style="font-size:22px;font-weight:800;color:#15803d;margin-bottom:8px">Detective de Fórmulas Excel</h2>
+        <p style="font-size:14px;color:#6b7280;line-height:1.6">
+          Se muestran <strong>4 afirmaciones</strong> sobre Excel.<br/>
+          <strong>3 son verdaderas</strong> y <strong>1 es falsa</strong>. ¡Encuéntrala!
+        </p>
+      </div>
+      <h3 style="font-size:14px;font-weight:700;color:#374151;margin-bottom:4px">Elige un tema para comenzar:</h3>
+      <div class="topics-grid">${topicBtns}</div>
+    </div>`;
+  }
+
+  // JUGANDO
+  if (state.phase === "playing") {
+    let stmtBtns = state.statements.map((s, i) =>
+      `<button class="stmt-btn" onclick="handleSelect(${i})">
+        <span class="stmt-num">${i+1}</span>
+        <span>${s}</span>
+      </button>`
+    ).join("");
+
+    html += `<div class="card">
+      <div style="text-align:center;margin-bottom:16px">
+        <span class="badge">📌 ${state.topic}</span>
+      </div>
+      <div class="hint">⚠️ Toca la afirmación que crees que es <strong>FALSA</strong></div>
+      ${stmtBtns}
+    </div>`;
+  }
+
+  // RESULTADO
+  if (state.phase === "result") {
+    const correct = state.selected === state.falseIdx;
+
+    let stmtResults = state.statements.map((s, i) => {
+      const isFalse = i === state.falseIdx;
+      return `<div class="${isFalse ? 'result-false' : 'result-true'}">
+        <span class="result-icon ${isFalse ? 'icon-false' : 'icon-true'}">${isFalse ? '✗' : '✓'}</span>
+        <div>
+          <div style="font-size:14px;line-height:1.5">${s}</div>
+          <div style="font-size:11px;font-weight:700;margin-top:4px;color:${isFalse ? '#dc2626' : '#16a34a'}">
+            ${isFalse ? '❌ FALSA' : '✅ VERDADERA'}
+          </div>
+        </div>
+      </div>`;
+    }).join("");
+
+    html += `<div class="card">
+      <div style="text-align:center;margin-bottom:24px">
+        <div style="font-size:48px">${correct ? '✅' : '❌'}</div>
+        <h2 style="font-size:24px;font-weight:800;color:${correct ? '#16a34a' : '#dc2626'};margin-top:8px">
+          ${correct ? '¡Correcto!' : '¡Casi!'}
+        </h2>
+        <p style="font-size:14px;color:#6b7280;margin-top:4px">
+          ${correct ? 'Detectaste la afirmación falsa 🎯' : 'Esta vez la falsa te engañó 😅'}
+        </p>
+      </div>
+      ${stmtResults}
+      <div class="explanation-box">
+        <strong style="display:block;margin-bottom:6px;font-size:13px">💡 Explicación del instructor:</strong>
+        ${state.explanation}
+      </div>
+      <button class="btn-primary" onclick="goMenu()">🔄 Seguir practicando</button>
+    </div>`;
+  }
+
+  html += `<div class="footer">Creado por <a href="https://cursosjumbo.com" target="_blank">Carlos Jumbo</a> · cursosjumbo.com</div>`;
+
+  app.innerHTML = html;
+}
+
+// Iniciar
+render();
+</script>
+</body>
+</html>
